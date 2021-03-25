@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'package:url_launcher/url_launcher.dart';
+import 'entries.dart';
 
 void main() {
   runApp(MyApp());
@@ -118,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {
                 Navigator.of(context).pop();
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => NewScreen()));
+                    .push(MaterialPageRoute(builder: (context) => Entries()));
               },
             ),
             ListTile(
@@ -167,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class NewScreen extends StatelessWidget {
+/*class NewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -180,4 +181,4 @@ class NewScreen extends StatelessWidget {
       ),
     );
   }
-}
+}*/
