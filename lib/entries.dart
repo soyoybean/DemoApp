@@ -1,5 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+
+Map<String,String> journalEntry = Map();
 
 class Entries extends StatefulWidget{
   @override
@@ -35,6 +36,11 @@ class _Entries extends State<Entries> {
                 child: new Image.asset("assets/happy.png")
               )
              ],),
+        TextFormField(
+          decoration: InputDecoration(
+              labelText: 'Enter your journal entry'
+          ),
+        )
           ],
         ),
       ),

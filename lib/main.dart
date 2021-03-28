@@ -114,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             ListTile(
-              title: Text("NewScreen"),
+              title: Text("Entries"),
               trailing: Icon(Icons.arrow_forward),
               onTap: () {
                 Navigator.of(context).pop();
@@ -159,6 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      // Create a button
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
@@ -168,6 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+// Create a class for a new screen to navigate to.
 /*class NewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
