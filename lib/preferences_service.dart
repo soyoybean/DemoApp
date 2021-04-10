@@ -14,13 +14,13 @@ class PreferencesService{
     print('Saved Settings');
   }
 
-  Future<Journal> getJournal() async{
+  Future<Journal> getJournal() async {
     final preferences = await SharedPreferences.getInstance();
 
-    final entry = preferences.getString('entry');
-    final isRecommend = preferences.getBool('isRecommend');
+    final entry = preferences.getString('entry') ?? "no entry";
+    final isRecommend = preferences.getBool('isRecommend') ?? false;
     final gender = Gender.values[preferences.getInt('gender') ?? 0];
-    final moodIndices = preferences.getStringList('mood');
+    final moodIndices = preferences.getStringList('mood') ?? [];
     final mood = moodIndices.map((stringIndex) => Mood.values[int.parse(stringIndex)]).toSet();
 
     return Journal(
