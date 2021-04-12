@@ -59,7 +59,8 @@ class MyHomePageState extends State<MyHomePage> {
   // youtube api key
   static String key = "";
 
-  static String entry = "";
+  List<String> entryList = [];
+  //static String entry = "";
   static var gender;
   static var mood;
   static bool isRecommend;
@@ -86,7 +87,7 @@ class MyHomePageState extends State<MyHomePage> {
   void populateJournal() async{
     final journal = await preferencesService.getJournal();
     setState(() {
-      entry = journal.entry;
+      entryList.add(journal.entry);
       gender = journal.gender;
       mood = journal.mood;
       isRecommend = journal.isRecommend;
@@ -161,10 +162,13 @@ class MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-       body: ListView(
+       body: Row(
          children: [
-           ListTile(
-             title: Text(entry),             
+           ListView.builder(
+            itemCount: entryList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return new Text(entryList[index]);
+            },
            ),
            GestureDetector(
              onTap: () => (print("I'm clicked!!")),
