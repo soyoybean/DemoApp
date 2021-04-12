@@ -20,7 +20,6 @@ class Entries extends StatefulWidget{
 
 class _Entries extends State<Entries> {
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

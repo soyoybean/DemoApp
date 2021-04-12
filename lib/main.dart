@@ -54,7 +54,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  static String entry = "";
+  List<String> entryList = [];
+  //static String entry = "";
   static var gender;
   static var mood;
   static bool isRecommend;
@@ -68,7 +69,7 @@ class MyHomePageState extends State<MyHomePage> {
   void populateJournal() async{
     final journal = await preferencesService.getJournal();
     setState(() {
-      entry = journal.entry;
+      entryList.add(journal.entry);
       gender = journal.gender;
       mood = journal.mood;
       isRecommend = journal.isRecommend;
@@ -138,12 +139,11 @@ class MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-       body: ListView(
-         children: [
-           ListTile(
-             title: Text(entry),
-           ),
-         ],
+       body: new ListView.builder(
+         itemCount: entryList.length,
+         itemBuilder: (BuildContext context, int index) {
+           return new Text(entryList[index]);
+         },
        )
        // This trailing comma makes auto-formatting nicer for build methods.
     );
