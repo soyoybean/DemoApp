@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'entries.dart';
 import 'preferences_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youtube_api/youtube_api.dart';
+import 'dart:math';
 
 void main() {
   runApp(MyApp());
@@ -54,14 +56,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
+  // youtube api key
+  static String key = "";
+
   static String entry = "";
   static var gender;
   static var mood;
   static bool isRecommend;
 
+  // youtube api
+  YoutubeAPI ytApi = YoutubeAPI(key);
+  List<YT_API> ytResult = [];
+
+  callYoutubeAPI() async {
+    String query = "wellness";
+    ytResult = await ytApi.search(query);
+    print(ytResult);
+    // ytResult = await ytApi.nextPage();
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
+    callYoutubeAPI();
     populateJournal();
   }
 
@@ -73,6 +91,11 @@ class MyHomePageState extends State<MyHomePage> {
       mood = journal.mood;
       isRecommend = journal.isRecommend;
     });
+  }
+
+  // picks a random number from 0 - 9 for selecting the YouTube video
+  int pickRandomIndex() {
+    return Random.secure().nextInt(10);
   }
 
   @override
@@ -141,14 +164,55 @@ class MyHomePageState extends State<MyHomePage> {
        body: ListView(
          children: [
            ListTile(
-             title: Text(entry),
+             title: Text(entry),             
            ),
+           GestureDetector(
+             onTap: () => (print("I'm clicked!!")),
+             child: listItem(pickRandomIndex())
+           )
          ],
        )
        // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-
+  
+  Widget listItem(index) {
+    return Card(
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 7.0),
+        padding: EdgeInsets.all(12.0),
+        child: Row(
+          children: <Widget>[
+            Image.network(
+              ytResult[index].thumbnail['default']['url'],
+            ),
+            Padding(padding: EdgeInsets.only(right: 20.0)),
+            Expanded(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                  Text(
+                    ytResult[index].title,
+                    softWrap: true,
+                    style: TextStyle(fontSize: 18.0),
+                  ),
+                  Padding(padding: EdgeInsets.only(bottom: 1.5)),
+                  Text(
+                    ytResult[index].channelTitle,
+                    softWrap: true,
+                  ),
+                  Padding(padding: EdgeInsets.only(bottom: 3.0)),
+                  Text(
+                    ytResult[index].url,
+                    softWrap: true,
+                  ),
+                ]))
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 
