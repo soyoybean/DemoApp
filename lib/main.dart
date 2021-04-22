@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'entries.dart';
 import 'preferences_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youtube_api/youtube_api.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'dart:math';
+
+const YOUTUBE_URL = "https://youtube.com";
 
 void main() {
   runApp(MyApp());
@@ -54,15 +59,31 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
+  // youtube api key
+  // static String key = "";
+
   List<String> entryList = [];
   //static String entry = "";
   static var gender;
   static var mood;
   static bool isRecommend;
 
+  // youtube api
+  // YoutubeAPI ytApi = YoutubeAPI(key);
+  // List<YT_API> ytResult = [];
+
+  // callYoutubeAPI() async {
+  //   String query = "wellness";
+  //   ytResult = await ytApi.search(query);
+  //   print(ytResult);
+  //   // ytResult = await ytApi.nextPage();
+  //   setState(() {});
+  // }
+
   @override
   void initState() {
     super.initState();
+    // callYoutubeAPI();
     populateJournal();
   }
 
@@ -74,6 +95,11 @@ class MyHomePageState extends State<MyHomePage> {
       mood = journal.mood;
       isRecommend = journal.isRecommend;
     });
+  }
+
+  // picks a random number from 0 - 9 for selecting the YouTube video
+  int pickRandomIndex() {
+    return Random.secure().nextInt(10);
   }
 
   @override
@@ -139,16 +165,70 @@ class MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-       body: new ListView.builder(
-         itemCount: entryList.length,
-         itemBuilder: (BuildContext context, int index) {
-           return new Text(entryList[index]);
-         },
-       )
+      body: new ListView.builder(
+          itemCount: entryList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return new Text(entryList[index]);
+          },
+        
+        //  GestureDetector(
+        //    onTap: () => (print("I'm clicked!!")),
+        //    child: listItem(pickRandomIndex())
+        //  )
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add your onPressed code here!
+          launchURL();
+        },
+        child: Icon(Icons.play_arrow),
+        backgroundColor: Colors.red,
+      ),
+
        // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
+  void launchURL() async =>
+    await canLaunch(YOUTUBE_URL) ? await launch(YOUTUBE_URL) : throw 'Could not launch $YOUTUBE_URL';
+  
+  // Widget listItem(index) {
+  //   return Card(
+  //     child: Container(
+  //       margin: EdgeInsets.symmetric(vertical: 7.0),
+  //       padding: EdgeInsets.all(12.0),
+  //       child: Row(
+  //         children: <Widget>[
+  //           Image.network(
+  //             ytResult[index].thumbnail['default']['url'],
+  //           ),
+  //           Padding(padding: EdgeInsets.only(right: 20.0)),
+  //           Expanded(
+  //               child: Column(
+  //                   mainAxisAlignment: MainAxisAlignment.start,
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: <Widget>[
+  //                 Text(
+  //                   ytResult[index].title,
+  //                   softWrap: true,
+  //                   style: TextStyle(fontSize: 18.0),
+  //                 ),
+  //                 Padding(padding: EdgeInsets.only(bottom: 1.5)),
+  //                 Text(
+  //                   ytResult[index].channelTitle,
+  //                   softWrap: true,
+  //                 ),
+  //                 Padding(padding: EdgeInsets.only(bottom: 3.0)),
+  //                 Text(
+  //                   ytResult[index].url,
+  //                   softWrap: true,
+  //                 ),
+  //               ]))
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 
